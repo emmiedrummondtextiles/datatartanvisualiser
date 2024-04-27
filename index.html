@@ -42,8 +42,9 @@
 
     .animated-text {
       position: absolute;
-      top: 20px;
-      left: -300px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       color: rgb(255, 98, 0);
       font-size: 80px;
       font-family: 'Futura', sans-serif;
@@ -52,44 +53,10 @@
 
     @keyframes moveText {
       0% {
-        left: -300px;
+        transform: translate(-50%, -50%);
       }
       100% {
-        left: calc(100% + 300px);
-      }
-    }
-
-    .move-left {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      right: 0;
-      animation: moveLeft 8s linear infinite;
-    }
-
-    .move-right {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      left: 0;
-      animation: moveRight 8s linear infinite;
-    }
-
-    @keyframes moveLeft {
-      0% {
-        left: 100%;
-      }
-      100% {
-        left: -100%;
-      }
-    }
-
-    @keyframes moveRight {
-      0% {
-        left: -100%;
-      }
-      100% {
-        left: 100%;
+        transform: translate(-50%, -50%) translateY(-100%);
       }
     }
 
@@ -114,19 +81,6 @@
       opacity: 1;  
       border-color: rgba(142, 96, 96, 0.7);
     }
-  </style>
-</head>
-<body>
-  <input
-    placeholder="Input Name"
-    spellcheck="false"
-    type="text"
-    oninput="generateFromName(this.value)"
-  />
-  <div class="animated-text">INPUT NAME</div>
-  <div class="noise-overlay"></div> <!-- Noise overlay -->
-  <div class="transparency-overlay left-overlay"></div> <!-- Left transparency overlay -->
-  <div class="transparency-overlay right-overlay"></div> <!-- Right transparency overlay -->
   <script>
     const PATTERN_WIDTH = 25;
     const BASE = 30;
