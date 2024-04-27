@@ -1,0 +1,17 @@
+<<<<<<< HEAD
+{
+  "root": ".",
+  "clean_urls": true,
+  "routes": {
+    "/**": "rgbtupleversion.html"
+  }
+}
+=======
+{
+  "root": ".",
+  "clean_urls": true,
+  "routes": {
+    "/**": "index.html"
+  }
+}
+>>>>>>> 16873041ca3578ce72c016bdaec1d77da56a4029
