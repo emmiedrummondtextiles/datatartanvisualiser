@@ -1,3 +1,0 @@
-web: npx http-server -p $PORT
-package1==1.0.0
-package2==2.1.0
