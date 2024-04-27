@@ -40,26 +40,6 @@
       background-color: rgb(0, 0, 0);
     }
 
-    .animated-text {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      color: rgb(255, 98, 0);
-      font-size: 80px;
-      font-family: 'Futura', sans-serif;
-      animation: moveText 5s linear infinite;
-    }
-
-    @keyframes moveText {
-      0% {
-        transform: translate(-50%, -50%);
-      }
-      100% {
-        transform: translate(-50%, -50%) translateY(-100%);
-      }
-    }
-
     input {
       position: absolute;
       top: 300px;
@@ -81,6 +61,18 @@
       opacity: 1;  
       border-color: rgba(142, 96, 96, 0.7);
     }
+  </style>
+</head>
+<body>
+  <input
+    placeholder="Input Name"
+    spellcheck="false"
+    type="text"
+    oninput="generateFromName(this.value)"
+  />
+  <div class="noise-overlay"></div> <!-- Noise overlay -->
+  <div class="transparency-overlay left-overlay"></div> <!-- Left transparency overlay -->
+  <div class="transparency-overlay right-overlay"></div> <!-- Right transparency overlay -->
   <script>
     const PATTERN_WIDTH = 25;
     const BASE = 30;
@@ -223,6 +215,7 @@
   </script>
 </body>
 </html>
+
 
     startAnimation();
   </script>
