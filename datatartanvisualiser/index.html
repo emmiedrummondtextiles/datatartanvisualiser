@@ -1,44 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PRINT YOUR OWN TARTAN</title>
   <style>
-
     .transparency-overlay {
       position: fixed;
       top: 0;
       width: 50%;
       height: 100%;
-      z-index: 997; /* Ensure the overlay is below the input box */
+      z-index: 997;
     }
 
     .left-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 75%; /* Adjusted to cover 3/4 of the screen */
-  height: 100%;
-  z-index: 997; /* Ensure the overlay is below the input box */
-  backdrop-filter: grayscale(100%);
-}
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 75%;
+      height: 100%;
+      z-index: 997;
+      backdrop-filter: grayscale(100%);
+    }
 
-.right-overlay {
-  position: fixed;
-  top: 25%; /* Adjusted to start 1/4 down the middle */
-  right: 0;
-  width: 25%; /* Adjusted to cover 1/4 of the screen */
-  height: 100%; /* Adjusted to cover 1/2 of the screen vertically */
-  z-index: 997; /* Ensure the overlay is below the input box */
-}
-
+    .right-overlay {
+      position: fixed;
+      top: 25%;
+      right: 0;
+      width: 25%;
+      height: 100%;
+      z-index: 997;
+    }
 
     body {
       overflow: clip;
       position: absolute;
       margin: 0;
       padding: 0;
-      background-color: rgb(0, 0, 0); /* Set background color to black */
+      background-color: rgb(0, 0, 0);
     }
 
     .animated-text {
@@ -106,7 +105,7 @@
       top: 300px;
       left: 30%;
       transform: translateX(-50%);
-      z-index: 999; /* Ensure the input box is above the transparency overlays */
+      z-index: 999;
       width: 350px;
       max-width: 90%;
       height: 30px;
@@ -122,8 +121,6 @@
       opacity: 1;  
       border-color: rgba(142, 96, 96, 0.7);
     }
-
-  
   </style>
 </head>
 <body>
@@ -140,54 +137,28 @@
   <div class="noise-overlay"></div> <!-- Noise overlay -->
   <div class="transparency-overlay left-overlay"></div> <!-- Left transparency overlay -->
   <div class="transparency-overlay right-overlay"></div> <!-- Right transparency overlay -->
-  <script type="text/javascript">
-    // Draw pattern
-    const 
-      PATTERN_WIDTH = 25,
-      BASE = 30, // Increase BASE for more pixelation
-      COLORS = [
-        'rgb(206,191,174)',
-        'rgb(35,34,43)',
-        'rgb(213,90,90)',
-        'rgb(34,32,34)',
-        'rgb(202,204,201)',
-        'rgb(33,191,183)',
-        'rgb(121,71,76)',
-        'rgb(32,63,74)',
-        'rgb(24,87,96)',
-        'rgb(223,60,0)',
-        'rgb(41,64,82)',
-        'rgb(193,192,192)',
-        'rgb(2,7,9)',
-        'rgb(0,51,102)',
-        'rgb(153,51,0)',
-        'rgb(255,102,0)',
-        'rgb(47,79,79)',
-        'rgb(46,139,87)',
-        'rgb(220,20,60)',
-        'rgb(199,21,133)',
-        'rgb(140,101,211)',
-        'rgb(195,54,44)',
-        'rgb(0,0,139)',
-        'rgb(0,206,209)',
-        'rgb(255,69,0)',
-        'rgb(120,120,120)'
-      ];
-      
+  <script>
+    const PATTERN_WIDTH = 25;
+    const BASE = 30;
+    const COLORS = [
+      'rgb(206,191,174)', 'rgb(35,34,43)', 'rgb(213,90,90)', 'rgb(34,32,34)', 'rgb(202,204,201)', 'rgb(33,191,183)',
+      'rgb(121,71,76)', 'rgb(32,63,74)', 'rgb(24,87,96)', 'rgb(223,60,0)', 'rgb(41,64,82)', 'rgb(193,192,192)',
+      'rgb(2,7,9)', 'rgb(0,51,102)', 'rgb(153,51,0)', 'rgb(255,102,0)', 'rgb(47,79,79)', 'rgb(46,139,87)',
+      'rgb(220,20,60)', 'rgb(199,21,133)', 'rgb(140,101,211)', 'rgb(195,54,44)', 'rgb(0,0,139)', 'rgb(0,206,209)',
+      'rgb(255,69,0)', 'rgb(120,120,120)'
+    ];
 
-    // Mapping of characters to colors
     const characterColors = {};
     for (let i = 0; i < 26; i++) {
       characterColors[String.fromCharCode(97 + i)] = COLORS[i];
     }
 
     function getLine(vert, color, offset, width) {
-      const
-        OFF_X = vert ? offset * BASE + Math.random() * BASE : BASE / 2 + Math.random() * BASE,
-        OFF_Y = vert ? 0 : offset * BASE + Math.random() * BASE,
-        gap = Math.random() * 4 - 4, // Introduce random gap for glitch effect
-        noiseX = Math.random() * 6 - 3, // Introduce random noise in x-direction
-        noiseY = Math.random() * 6 - 3; // Introduce random noise in y-direction
+      const OFF_X = vert ? offset * BASE + Math.random() * BASE : BASE / 2 + Math.random() * BASE;
+      const OFF_Y = vert ? 0 : offset * BASE + Math.random() * BASE;
+      const gap = Math.random() * 4 - 4;
+      const noiseX = Math.random() * 6 - 3;
+      const noiseY = Math.random() * 6 - 3;
 
       return `repeating-linear-gradient(
         ${vert ? 'to bottom' : 'to right'},
@@ -213,7 +184,6 @@
       return css + bg;
     }
 
-    // Generate pattern with name as seed
     function generateFromName(name) {
       if (name === '') {
         startAnimation();
@@ -228,8 +198,8 @@
               lines.push([
                 baseColor,
                 pos,
-                6, // Fixed width of 6 for 6x6 tartan pattern
-                Math.random() * BASE * 1.5 // Random line width with more variability
+                6,
+                Math.random() * BASE * 1.5
               ]);
             }
           }
@@ -237,17 +207,13 @@
         const generatedPattern = getPattern(lines, randEl(COLORS));
         DIVS.forEach(div => div.style.background = generatedPattern);
 
-    
-        // Update transparency overlay colors
-const leftOverlayColor = characterColors[name[0].toLowerCase()]; // Get color from characterColors object based on first character of name
-const rightOverlayColor = characterColors[name[name.length - 1].toLowerCase()]; // Get color from characterColors object based on last character of name
+        const leftOverlayColor = characterColors[name[0].toLowerCase()];
+        const rightOverlayColor = characterColors[name[name.length - 1].toLowerCase()];
       }
     }
 
-    // Generate random pattern
-    let
-      randInt,
-      randEl = arr => arr[Math.floor(Math.random() * arr.length)];
+    let randInt;
+    const randEl = arr => arr[Math.floor(Math.random() * arr.length)];
 
     function generatePattern(seed) {
       const RNG = [
@@ -259,9 +225,8 @@ const rightOverlayColor = characterColors[name[name.length - 1].toLowerCase()]; 
         return Math.floor(max * RNG[3] / RNG[0]);
       };
 
-      let
-        pallette = [],
-        lines = [];
+      const pallette = [];
+      const lines = [];
       for (let i = 0; i < 6; i++) {
         pallette.push(randEl(COLORS));
       }
@@ -270,22 +235,18 @@ const rightOverlayColor = characterColors[name[name.length - 1].toLowerCase()]; 
         lines.push([
           randEl(pallette),
           pos,
-          6, // Fixed width of 6 for 6x6 tartan pattern
-          Math.random() * BASE // Random line width
+          6,
+          Math.random() * BASE
         ]);
       }
 
       return getPattern(lines, randEl(COLORS));
     }
 
-    // Add elements to page
-    const
-      EL_WIDTH = BASE * PATTERN_WIDTH * 2,
-      CONTAINER = document.createElement('main'),
-      DIVS = [],
-      DIV_COUNT =
-          Math.ceil(window.innerWidth / EL_WIDTH) *
-          Math.ceil(window.innerHeight / EL_WIDTH);
+    const EL_WIDTH = BASE * PATTERN_WIDTH * 2;
+    const CONTAINER = document.createElement('main');
+    const DIVS = [];
+    const DIV_COUNT = Math.ceil(window.innerWidth / EL_WIDTH) * Math.ceil(window.innerHeight / EL_WIDTH);
 
     for (let i = 0; i < DIV_COUNT; i++) {
       const DIV = document.createElement('div');
@@ -297,26 +258,17 @@ const rightOverlayColor = characterColors[name[name.length - 1].toLowerCase()]; 
     DIVS.sort(() => Math.random() < 0.5 ? 1 : -1);
 
     document.body.appendChild(CONTAINER);
-    CONTAINER.style.width = (
-      EL_WIDTH * Math.ceil(window.innerWidth / EL_WIDTH)
-    ) + 'px';
-    CONTAINER.style.height = (
-      EL_WIDTH * Math.ceil(window.innerHeight / EL_WIDTH)
-    ) + 'px';
+    CONTAINER.style.width = (EL_WIDTH * Math.ceil(window.innerWidth / EL_WIDTH)) + 'px';
+    CONTAINER.style.height = (EL_WIDTH * Math.ceil(window.innerHeight / EL_WIDTH)) + 'px';
 
-
-    // Animate
     let ani, ani_i = 0;
     function startAnimation() {
       clearInterval(ani);
-      ani = setInterval(
-        () => {
-          DIVS[ani_i].style.background = generatePattern();
-          ani_i += 1;
-          ani_i %= DIVS.length;
-        },
-        800
-      );
+      ani = setInterval(() => {
+        DIVS[ani_i].style.background = generatePattern();
+        ani_i += 1;
+        ani_i %= DIVS.length;
+      }, 800);
     }
 
     function stopAnimation() {
@@ -324,8 +276,6 @@ const rightOverlayColor = characterColors[name[name.length - 1].toLowerCase()]; 
     }
 
     startAnimation();
-
   </script>
 </body>
 </html>
-
