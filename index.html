@@ -59,45 +59,8 @@
       }
     }
 
-    .animated-text.interact {
-      font-size: 96px;
-      top: 50%;
-      transform: translateY(-50%);
-      animation: moveText 8s linear infinite;
     }
 
-    .move-left {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      right: 0;
-      animation: moveLeft 8s linear infinite;
-    }
-
-    .move-right {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      left: 0;
-      animation: moveRight 8s linear infinite;
-    }
-
-    @keyframes moveLeft {
-      0% {
-        left: 100%;
-      }
-      100% {
-        left: -100%;
-      }
-    }
-
-    @keyframes moveRight {
-      0% {
-        left: -100%;
-      }
-      100% {
-        left: 100%;
-      }
     }
 
     input {
@@ -131,9 +94,6 @@
     oninput="generateFromName(this.value)"
   />
   <div class="animated-text">INPUT NAME</div>
-  <div class="animated-text interact">INTERACT</div>
-  <div class="animated-text move-left">WITH</div>
-  <div class="animated-text move-right">ME</div>
   <div class="noise-overlay"></div> <!-- Noise overlay -->
   <div class="transparency-overlay left-overlay"></div> <!-- Left transparency overlay -->
   <div class="transparency-overlay right-overlay"></div> <!-- Right transparency overlay -->
