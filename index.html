@@ -151,26 +151,54 @@
   <div class="noise-overlay"></div> 
   <div class="transparency-overlay left-overlay"></div> 
   <div class="transparency-overlay right-overlay"></div> 
-  <script>
-    const PATTERN_WIDTH = 25;
-    const BASE = 30;
+  <script type="text/javascript">
+    // Draw pattern
+    const 
+      PATTERN_WIDTH = 25,
+      BASE = 50, // Increase BASE for more pixelation
+      COLORS = [
+        'rgb(206,191,174)',
+        'rgb(35,34,43)',
+        'rgb(213,90,90)',
+        'rgb(34,32,34)',
+        'rgb(202,204,201)',
+        'rgb(33,191,183)',
+        'rgb(121,71,76)',
+        'rgb(32,63,74)',
+        'rgb(24,87,96)',
+        'rgb(223,60,0)',
+        'rgb(41,64,82)',
+        'rgb(193,192,192)',
+        'rgb(2,7,9)',
+        'rgb(0,51,102)',
+        'rgb(153,51,0)',
+        'rgb(255,102,0)',
+        'rgb(47,79,79)',
+        'rgb(46,139,87)',
+        'rgb(220,20,60)',
+        'rgb(199,21,133)',
+        'rgb(140,101,211)',
+        'rgb(195,54,44)',
+        'rgb(0,0,139)',
+        'rgb(0,206,209)',
+        'rgb(255,69,0)',
+        'rgb(120,120,120)'
+      ];
+      
 
-    const characterColors = {
-      'a': 'rgb(206,191,174)', 'b': 'rgb(35,34,43)', 'c': 'rgb(213,90,90)', 'd': 'rgb(34,32,34)', 
-      'e': 'rgb(202,204,201)', 'f': 'rgb(33,191,183)', 'g': 'rgb(121,71,76)', 'h': 'rgb(32,63,74)', 
-      'i': 'rgb(24,87,96)', 'j': 'rgb(223,60,0)', 'k': 'rgb(41,64,82)', 'l': 'rgb(193,192,192)',
-      'm': 'rgb(2,7,9)', 'n': 'rgb(0,51,102)', 'o': 'rgb(153,51,0)', 'p': 'rgb(255,102,0)', 
-      'q': 'rgb(47,79,79)', 'r': 'rgb(46,139,87)', 's': 'rgb(220,20,60)', 't': 'rgb(199,21,133)', 
-      'u': 'rgb(140,101,211)', 'v': 'rgb(195,54,44)', 'w': 'rgb(0,0,139)', 'x': 'rgb(0,206,209)', 
-      'y': 'rgb(255,69,0)', 'z': 'rgb(120,120,120)'
-    };
+    // Mapping of characters to colors
+    const characterColors = {};
+    for (let i = 0; i < 26; i++) {
+      characterColors[String.fromCharCode(97 + i)] = COLORS[i];
+    }
 
     function getLine(vert, color, offset, width) {
-      const OFF_X = vert ? offset * BASE + Math.random() * BASE : BASE / 2 + Math.random() * BASE;
-      const OFF_Y = vert ? 0 : offset * BASE + Math.random() * BASE;
-      const gap = Math.random() * 4 - 4;
-      const noiseX = Math.random() * 6 - 3;
-      const noiseY = Math.random() * 6 - 3;
+      const
+        OFF_X = vert ? offset * BASE + Math.random() * BASE : BASE / 2 + Math.random() * BASE,
+        OFF_Y = vert ? 0 : offset * BASE + Math.random() * BASE,
+        gap = Math.random() * 4 - 4, // Introduce random gap for glitch effect
+        noiseX = Math.random() * 6 - 3, // Introduce random noise in x-direction
+        noiseY = Math.random() * 6 - 3; // Introduce random noise in y-direction
 
       return `repeating-linear-gradient(
         ${vert ? 'to bottom' : 'to right'},
@@ -196,6 +224,7 @@
       return css + bg;
     }
 
+    // Generate pattern with name as seed
     function generateFromName(name) {
       if (name === '') {
         startAnimation();
@@ -204,26 +233,32 @@
         const lines = [];
         for (let i = 0; i < name.length; i++) {
           const character = name[i].toLowerCase();
-          if (!(character in characterColors)) {
-            characterColors[character] = `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`;
+          if (character in characterColors) {
+            const baseColor = characterColors[character];
+            for (let pos = 0; pos < PATTERN_WIDTH; pos += 6) {
+              lines.push([
+                baseColor,
+                pos,
+                6, // Fixed width of 6 for 6x6 tartan pattern
+                Math.random() * BASE * 1.5 // Random line width with more variability
+              ]);
+            }
           }
-          const baseColor = characterColors[character];
-          lines.push([
-            baseColor,
-            i * PATTERN_WIDTH,
-            PATTERN_WIDTH,
-            Math.random() * BASE * 1.5
-          ]);
         }
-        const generatedPattern = getPattern(lines, `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`);
+        const generatedPattern = getPattern(lines, randEl(COLORS));
         DIVS.forEach(div => div.style.background = generatedPattern);
 
-        const leftOverlayColor = characterColors[name[0].toLowerCase()];
-        const rightOverlayColor = characterColors[name[name.length - 1].toLowerCase()];
+    
+        // Update transparency overlay colors
+const leftOverlayColor = characterColors[name[0].toLowerCase()]; // Get color from characterColors object based on first character of name
+const rightOverlayColor = characterColors[name[name.length - 1].toLowerCase()]; // Get color from characterColors object based on last character of name
       }
     }
 
-    let randInt;
+    // Generate random pattern
+    let
+      randInt,
+      randEl = arr => arr[Math.floor(Math.random() * arr.length)];
 
     function generatePattern(seed) {
       const RNG = [
@@ -235,28 +270,33 @@
         return Math.floor(max * RNG[3] / RNG[0]);
       };
 
-      const pallette = [];
-      const lines = [];
+      let
+        pallette = [],
+        lines = [];
       for (let i = 0; i < 6; i++) {
-        pallette.push(`rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`);
+        pallette.push(randEl(COLORS));
       }
 
       for (let pos = 0; pos < PATTERN_WIDTH; pos += 6) {
         lines.push([
           randEl(pallette),
           pos,
-          6,
-          Math.random() * BASE
+          6, // Fixed width of 6 for 6x6 tartan pattern
+          Math.random() * BASE // Random line width
         ]);
       }
 
-      return getPattern(lines, `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`);
+      return getPattern(lines, randEl(COLORS));
     }
 
-    const EL_WIDTH = BASE * PATTERN_WIDTH * 2;
-    const CONTAINER = document.createElement('main');
-    const DIVS = [];
-    const DIV_COUNT = Math.ceil(window.innerWidth / EL_WIDTH) * Math.ceil(window.innerHeight / EL_WIDTH);
+    // Add elements to page
+    const
+      EL_WIDTH = BASE * PATTERN_WIDTH * 2,
+      CONTAINER = document.createElement('main'),
+      DIVS = [],
+      DIV_COUNT =
+          Math.ceil(window.innerWidth / EL_WIDTH) *
+          Math.ceil(window.innerHeight / EL_WIDTH);
 
     for (let i = 0; i < DIV_COUNT; i++) {
       const DIV = document.createElement('div');
@@ -268,19 +308,26 @@
     DIVS.sort(() => Math.random() < 0.5 ? 1 : -1);
 
     document.body.appendChild(CONTAINER);
-    CONTAINER.style.width = (EL_WIDTH * Math.ceil(window.innerWidth / EL_WIDTH)) + 'px';
-    CONTAINER.style.height = (EL_WIDTH * Math.ceil(window.innerHeight / EL_WIDTH)) + 'px';
+    CONTAINER.style.width = (
+      EL_WIDTH * Math.ceil(window.innerWidth / EL_WIDTH)
+    ) + 'px';
+    CONTAINER.style.height = (
+      EL_WIDTH * Math.ceil(window.innerHeight / EL_WIDTH)
+    ) + 'px';
 
+
+    // Animate
     let ani, ani_i = 0;
-    const animationNames = ['emma', 'john', 'alice', 'peter']; // Define animation names here
-
     function startAnimation() {
       clearInterval(ani);
-      ani = setInterval(() => {
-        const name = animationNames[ani_i % animationNames.length];
-        generateFromName(name);
-        ani_i += 1;
-      }, 5000); // Change animation speed here (milliseconds)
+      ani = setInterval(
+        () => {
+          DIVS[ani_i].style.background = generatePattern();
+          ani_i += 1;
+          ani_i %= DIVS.length;
+        },
+        800
+      );
     }
 
     function stopAnimation() {
@@ -288,7 +335,9 @@
     }
 
     startAnimation();
+
   </script>
 </body>
 </html>
+
 
