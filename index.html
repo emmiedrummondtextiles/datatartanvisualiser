@@ -1,6 +1,3 @@
-//
-//using inspo from niall code pen- generate pattern function
-//
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -127,6 +124,23 @@
   </style>
 </head>
 <body>
+</style>
+</head>
+<body>
+<input
+  placeholder="Input your name...explore the screen(zoom out)"
+  spellcheck="false"
+  type="text"
+  oninput="generateFromName(this.value)"
+/>
+<div class="animated-text interact">EMMIEDRUMMOND-DJCAD2024</div>
+<div class="noise-overlay"></div> 
+<div class="transparency-overlay left-overlay"></div> 
+<div class="transparency-overlay right-overlay"></div> 
+
+  </style>
+</head>
+<body>
   <input
     placeholder="Input your name...explore the screen(zoom out)"
     spellcheck="false"
@@ -140,18 +154,16 @@
   <script>
     const PATTERN_WIDTH = 25;
     const BASE = 30;
-    const COLORS = [
-      'rgb(206,191,174)', 'rgb(35,34,43)', 'rgb(213,90,90)', 'rgb(34,32,34)', 'rgb(202,204,201)', 'rgb(33,191,183)',
-      'rgb(121,71,76)', 'rgb(32,63,74)', 'rgb(24,87,96)', 'rgb(223,60,0)', 'rgb(41,64,82)', 'rgb(193,192,192)',
-      'rgb(2,7,9)', 'rgb(0,51,102)', 'rgb(153,51,0)', 'rgb(255,102,0)', 'rgb(47,79,79)', 'rgb(46,139,87)',
-      'rgb(220,20,60)', 'rgb(199,21,133)', 'rgb(140,101,211)', 'rgb(195,54,44)', 'rgb(0,0,139)', 'rgb(0,206,209)',
-      'rgb(255,69,0)', 'rgb(120,120,120)'
-    ];
 
-    const characterColors = {};
-    for (let i = 0; i < 26; i++) {
-      characterColors[String.fromCharCode(97 + i)] = COLORS[i];
-    }
+    const characterColors = {
+      'a': 'rgb(206,191,174)', 'b': 'rgb(35,34,43)', 'c': 'rgb(213,90,90)', 'd': 'rgb(34,32,34)', 
+      'e': 'rgb(202,204,201)', 'f': 'rgb(33,191,183)', 'g': 'rgb(121,71,76)', 'h': 'rgb(32,63,74)', 
+      'i': 'rgb(24,87,96)', 'j': 'rgb(223,60,0)', 'k': 'rgb(41,64,82)', 'l': 'rgb(193,192,192)',
+      'm': 'rgb(2,7,9)', 'n': 'rgb(0,51,102)', 'o': 'rgb(153,51,0)', 'p': 'rgb(255,102,0)', 
+      'q': 'rgb(47,79,79)', 'r': 'rgb(46,139,87)', 's': 'rgb(220,20,60)', 't': 'rgb(199,21,133)', 
+      'u': 'rgb(140,101,211)', 'v': 'rgb(195,54,44)', 'w': 'rgb(0,0,139)', 'x': 'rgb(0,206,209)', 
+      'y': 'rgb(255,69,0)', 'z': 'rgb(120,120,120)'
+    };
 
     function getLine(vert, color, offset, width) {
       const OFF_X = vert ? offset * BASE + Math.random() * BASE : BASE / 2 + Math.random() * BASE;
@@ -192,19 +204,18 @@
         const lines = [];
         for (let i = 0; i < name.length; i++) {
           const character = name[i].toLowerCase();
-          if (character in characterColors) {
-            const baseColor = characterColors[character];
-            for (let pos = 0; pos < PATTERN_WIDTH; pos += 6) {
-              lines.push([
-                baseColor,
-                pos,
-                6,
-                Math.random() * BASE * 1.5
-              ]);
-            }
+          if (!(character in characterColors)) {
+            characterColors[character] = `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`;
           }
+          const baseColor = characterColors[character];
+          lines.push([
+            baseColor,
+            i * PATTERN_WIDTH,
+            PATTERN_WIDTH,
+            Math.random() * BASE * 1.5
+          ]);
         }
-        const generatedPattern = getPattern(lines, randEl(COLORS));
+        const generatedPattern = getPattern(lines, `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`);
         DIVS.forEach(div => div.style.background = generatedPattern);
 
         const leftOverlayColor = characterColors[name[0].toLowerCase()];
@@ -213,7 +224,6 @@
     }
 
     let randInt;
-    const randEl = arr => arr[Math.floor(Math.random() * arr.length)];
 
     function generatePattern(seed) {
       const RNG = [
@@ -228,7 +238,7 @@
       const pallette = [];
       const lines = [];
       for (let i = 0; i < 6; i++) {
-        pallette.push(randEl(COLORS));
+        pallette.push(`rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`);
       }
 
       for (let pos = 0; pos < PATTERN_WIDTH; pos += 6) {
@@ -240,7 +250,7 @@
         ]);
       }
 
-      return getPattern(lines, randEl(COLORS));
+      return getPattern(lines, `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`);
     }
 
     const EL_WIDTH = BASE * PATTERN_WIDTH * 2;
@@ -262,13 +272,15 @@
     CONTAINER.style.height = (EL_WIDTH * Math.ceil(window.innerHeight / EL_WIDTH)) + 'px';
 
     let ani, ani_i = 0;
+    const animationNames = ['emma', 'john', 'alice', 'peter']; // Define animation names here
+
     function startAnimation() {
       clearInterval(ani);
       ani = setInterval(() => {
-        DIVS[ani_i].style.background = generatePattern();
+        const name = animationNames[ani_i % animationNames.length];
+        generateFromName(name);
         ani_i += 1;
-        ani_i %= DIVS.length;
-      }, 800);
+      }, 5000); // Change animation speed here (milliseconds)
     }
 
     function stopAnimation() {
